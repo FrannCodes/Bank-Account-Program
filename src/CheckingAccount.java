@@ -1,11 +1,10 @@
 public class CheckingAccount extends BankAccount{
-    int accountNum = 0;
 
     public CheckingAccount(double balanceAmt){
         super(balanceAmt);
-        accountNum = BankAccount.accountCount;
     }
 
+    // Processing Check Method
     public void processCheck(){
         int checkNum;
         System.out.print("Enter the check number: #");
@@ -26,5 +25,15 @@ public class CheckingAccount extends BankAccount{
         while (amount > balance);
 
         System.out.println("Check #" + checkNum + " with the amount of " + amount + " has been cached.");
+    }
+
+    // ToString Method:
+    @Override
+    public String toString(){
+        String accType = String.format("%-15s", "Checking");
+        String accNum = String.format("%-15s", accountNum);
+        String rate = String.format("%-15s", "0.0%");
+
+        return accType + accNum + rate;
     }
 }
