@@ -3,9 +3,11 @@ import java.util.Scanner;
 public class Run {
     Scanner scan = new Scanner(System.in);
     BankAccount[] accounts = new BankAccount[30];
-    boolean run = true;
+
 
     public void run(){
+        boolean run = true;
+
         // Makes the run a loop until the "Exit" option is chosen
         do{
             // Choices
@@ -32,11 +34,15 @@ public class Run {
             System.out.println();
 
             switch (choice){
+                // View Accounts
                 case 1:
                     System.out.println("Accounts Summary:");
                     displayAccounts();
+                    System.out.println();
+
                     break;
 
+                // Create Account
                 case 2:
                     if (accounts[accounts.length - 1] != null){
                         System.out.println("Max amount of accounts reached");
@@ -48,8 +54,108 @@ public class Run {
                     }
                     break;
 
+                // Make Deposit
+                case 3:
+                    if (accounts[0] != null){
+                        System.out.println("The summary of your accounts:");
+                        displayAccounts();
 
+                        System.out.println();
+                        int option;
 
+                        do{
+                            System.out.print("Please input your choice: ");
+                            option = scan.nextInt();
+
+                            if (option < 1 || option > BankAccount.accountCount){
+                                System.out.print("Invalid choice.");
+                            }
+                        }
+                        while (option < 1 || option > BankAccount.accountCount);
+
+                        // Chooses an account and runs the deposit method
+                        accounts[option - 1].deposit();
+                        System.out.println();
+                    }
+
+                    else{
+                        System.out.println("No accounts to deposit to.");
+                        System.out.println();
+                    }
+                    break;
+
+                // Withdraw
+                case 4:
+                    if (accounts[0] != null){
+                        System.out.println("The summary of your accounts:");
+                        displayAccounts();
+
+                        System.out.println();
+                        int option1;
+
+                        do{
+                            System.out.print("Please input your choice: ");
+                            option1 = scan.nextInt();
+
+                            if (option1 < 1 || option1 > BankAccount.accountCount){
+                                System.out.print("Invalid choice.");
+                            }
+                        }
+                        while (option1 < 1 || option1 > BankAccount.accountCount);
+
+                        // Chooses an account and runs the withdraw method
+                        accounts[option1 - 1].withdraw();
+                        System.out.println();
+                    }
+
+                    else{
+                        System.out.println("No accounts to withdraw from.");
+                        System.out.println();
+                    }
+                    break;
+
+                // Process Check
+                case 5:
+                    if (accounts[0] != null){
+                        System.out.println("The summary of your accounts:");
+                        displayAccounts();
+
+                        System.out.println();
+                        int option2;
+                        boolean isChecking = false;
+
+                        do{
+                            do{
+                                System.out.print("Please input your choice: ");
+                                option2 = scan.nextInt();
+
+                                if (option2 < 1 || option2 > BankAccount.accountCount){
+                                    System.out.print("Invalid choice. ");
+                                }
+                            }
+                            while (option2 < 1 || option2 > BankAccount.accountCount);
+
+                            if (!(accounts[option2 - 1] instanceof CheckingAccount)){
+                                System.out.print("Invalid choice. ");
+                            }
+                            else{
+                                isChecking = true;
+                            }
+                        }
+                        while(!isChecking);
+
+                        // Chooses an account and runs the process check method
+                        ((CheckingAccount) accounts[option2 - 1]).processCheck();
+                        System.out.println();
+                    }
+
+                    else{
+                        System.out.println("No accounts to cash a check from.");
+                        System.out.println();
+                    }
+                    break;
+
+                // Exit
                 case 6:
                     System.out.println("Thank you for using YourBank Bank. Goodbye!");
                     run = false;
@@ -64,9 +170,15 @@ public class Run {
         System.out.printf("%-15s%-15s%-15s%-15s%n",
                 "Account #", "Type", "Balance", "Interest Rate");
 
-        for (BankAccount account : accounts){
-            if (account != null){
-                System.out.println(account);
+        // What will display when there are no accounts
+        if (accounts[0] == null){
+            System.out.printf("%-15s%-15s%-15s%-15s%n%n", "--", "--", "--", "--");
+        }
+        else{
+            for (BankAccount account : accounts){
+                if (account != null){
+                    System.out.println(account);
+                }
             }
         }
     }
@@ -89,7 +201,7 @@ public class Run {
             choice = scan.nextInt();
 
             if (choice > 2 || choice < 1){
-                System.out.print("Invalid choice.");
+                System.out.print("Invalid choice. ");
             }
         }
         while (choice > 2 || choice < 1);
@@ -109,8 +221,8 @@ public class Run {
                     case 2:
                         System.out.print("Use the default interest rate (0.3%)? Y/N: ");
 
+                        scan.nextLine();
                         do{
-                            scan.nextLine();
                             choiceIR = scan.nextLine().toLowerCase().charAt(0);
 
                             if (choiceIR != 'y' && choiceIR != 'n'){

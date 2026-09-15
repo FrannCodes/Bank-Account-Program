@@ -18,7 +18,7 @@ public class SavingAccount extends BankAccount{
     public String toString(){
         String accType = String.format("%-15s", "Savings");
         String accNum = String.format("%-15d", accountNum);
-        String rate = String.format("%-14f%%", interestRate);
+        String rate = String.format("%-15s", String.format("%.1f%%", interestRate));
         String accBalance = String.format("$%-14.2f", balance);
 
         return accNum + accType + accBalance + rate;
