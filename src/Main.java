@@ -33,13 +33,9 @@ public class Main {
             System.out.println("Reached max number of attempts");
         }
         else{
-            //
-            System.out.println("1. Get account summary \n" +
-                    "2. Create a new account \n" +
-                    "3. Make deposit \n" +
-                    "4. Withdraw \n" +
-                    "5. Process check \n" +
-                    "6. Exit");
+            System.out.println();
+            Run run = new Run();
+            run.run();
         }
     }
 

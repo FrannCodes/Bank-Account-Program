@@ -31,9 +31,10 @@ public class CheckingAccount extends BankAccount{
     @Override
     public String toString(){
         String accType = String.format("%-15s", "Checking");
-        String accNum = String.format("%-15s", accountNum);
+        String accNum = String.format("%-15d", accountNum);
         String rate = String.format("%-15s", "0.0%");
+        String accBalance = String.format("$%-14.2f", balance);
 
-        return accType + accNum + rate;
+        return accNum + accType + accBalance + rate;
     }
 }
