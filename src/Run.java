@@ -5,7 +5,6 @@ public class Run {
     Scanner scan = new Scanner(System.in);
     BankAccount[] accounts = new BankAccount[30];
 
-
     public void run(){
         boolean run = true;
 
