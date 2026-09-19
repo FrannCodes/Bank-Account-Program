@@ -6,8 +6,8 @@ public class Main {
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
 
-        //Create a password for the program
-        String password = password();
+        // Password for the program
+        final String password = "MyBank123";
 
         //Main Screen
         int wrongPasswordCount = 0;
@@ -37,16 +37,6 @@ public class Main {
             Run run = new Run();
             run.run();
         }
-    }
-
-    //Method to create a password for the program
-    public static String password(){
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print("Create a password: ");
-        String password = scan.nextLine();
-
-        return password;
     }
 }
 

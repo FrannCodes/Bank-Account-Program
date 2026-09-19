@@ -1,3 +1,5 @@
+import java.util.InputMismatchException;
+
 public class CheckingAccount extends BankAccount{
 
     public CheckingAccount(double balanceAmt){
@@ -6,25 +8,64 @@ public class CheckingAccount extends BankAccount{
 
     // Processing Check Method
     public void processCheck(){
-        int checkNum;
-        System.out.print("Enter the check number: #");
-        checkNum = scan.nextInt();
-
+        int checkNum = 1;
         double amount;
-        System.out.print("Enter the amount you would like to check: $");
-        do{
-            amount = scan.nextDouble();
+        boolean isNotNum = true;
 
-            if (amount > balance){
-                System.out.print("Insufficient funds! Enter again: $");
+        // Loops until a number is entered
+        do{
+            try{
+                // Loops until valid check number is entered
+                do{
+                    System.out.print("Enter the check number: #");
+                    checkNum = scan.nextInt();
+
+                    if (checkNum <= 0){
+                        System.out.println("Must enter a valid number greater than 0!");
+                    }
+                }
+                while(checkNum <= 0);
+
+                isNotNum = false;
             }
-            else {
-                balance -= amount;
+            catch (InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine();
             }
         }
-        while (amount > balance);
+        while(isNotNum);
 
-        System.out.println("Check #" + checkNum + " with the amount of " + amount + " has been cached.");
+        isNotNum = true;
+
+        // Loops until number is entered
+        do{
+            // Error handling in case user doesn't enter a number
+            try{
+                // Loops until valid number is entered
+                do{
+                    System.out.print("Enter the amount you would like to check: $");
+                    amount = scan.nextDouble();
+
+                    if (amount > balance){
+                        System.out.print("Insufficient funds! ");
+                    }
+                    else if (amount < 0) {
+                        System.out.println("Must enter a valid amount!");
+                    }
+                }
+                while (amount > balance || amount < 0);
+
+                balance -= amount;
+                System.out.println("Check #" + checkNum + " with the amount of " + amount + " has been cached.");
+
+                isNotNum = false;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine();
+            }
+        }
+        while(isNotNum);
     }
 
     // ToString Method:

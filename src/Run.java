@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Run {
@@ -18,21 +19,36 @@ public class Run {
                     "5. Process check \n" +
                     "6. Exit");
 
-            int choice;
+            int choice = 0;
+            boolean isNotNum = true;
 
-            // Loop if choice is not within the choices
-            do{
-                System.out.print("Enter your choice: ");
-                choice = scan.nextInt();
+            // Loops until a valid number is typed
+            do {
+                try{
+                    // Loop if choice is not within the choices
+                    do{
+                        System.out.print("Enter your choice: ");
+                        choice = scan.nextInt();
 
-                if (choice > 6 || choice < 1){
-                    System.out.println("Not a valid choice.");
+                        if (choice > 6 || choice < 1){
+                            System.out.println("Not a valid choice.");
+                        }
+                    }
+                    while(choice > 6 || choice < 1);
+
+                    isNotNum = false;
+                }
+
+                catch(InputMismatchException e){
+                    System.out.println("Must enter a number!");
+                    scan.nextLine();
                 }
             }
-            while(choice > 6 || choice < 1);
+            while (isNotNum);
 
             System.out.println();
 
+            // Choices:
             switch (choice){
                 // View Accounts
                 case 1:
@@ -62,19 +78,32 @@ public class Run {
 
                         System.out.println();
                         int option;
+                        isNotNum = true;
 
                         do{
-                            System.out.print("Please input your choice: ");
-                            option = scan.nextInt();
+                            try{
+                                do{
+                                    System.out.print("Please input your choice: ");
+                                    option = scan.nextInt();
 
-                            if (option < 1 || option > BankAccount.accountCount){
-                                System.out.print("Invalid choice.");
+                                    if (option < 1 || option > BankAccount.accountCount){
+                                        System.out.print("Invalid choice.");
+                                    }
+                                }
+                                while (option < 1 || option > BankAccount.accountCount);
+
+                                // Chooses an account and runs the deposit method
+                                accounts[option - 1].deposit();
+
+                                isNotNum = false;
+                            }
+                            catch (InputMismatchException e){
+                                System.out.println("Must enter a number!");
+                                scan.nextLine();
                             }
                         }
-                        while (option < 1 || option > BankAccount.accountCount);
+                        while (isNotNum);
 
-                        // Chooses an account and runs the deposit method
-                        accounts[option - 1].deposit();
                         System.out.println();
                     }
 
@@ -92,19 +121,32 @@ public class Run {
 
                         System.out.println();
                         int option1;
+                        isNotNum = true;
 
                         do{
-                            System.out.print("Please input your choice: ");
-                            option1 = scan.nextInt();
+                            try{
+                                do{
+                                    System.out.print("Please input your choice: ");
+                                    option1 = scan.nextInt();
 
-                            if (option1 < 1 || option1 > BankAccount.accountCount){
-                                System.out.print("Invalid choice.");
+                                    if (option1 < 1 || option1 > BankAccount.accountCount){
+                                        System.out.print("Invalid choice.");
+                                    }
+                                }
+                                while (option1 < 1 || option1 > BankAccount.accountCount);
+
+                                // Chooses an account and runs the withdraw method
+                                accounts[option1 - 1].withdraw();
+
+                                isNotNum = false;
+                            }
+                            catch (InputMismatchException e){
+                                System.out.println("Must enter a number!");
+                                scan.nextLine();
                             }
                         }
-                        while (option1 < 1 || option1 > BankAccount.accountCount);
+                        while(isNotNum);
 
-                        // Chooses an account and runs the withdraw method
-                        accounts[option1 - 1].withdraw();
                         System.out.println();
                     }
 
@@ -123,29 +165,42 @@ public class Run {
                         System.out.println();
                         int option2;
                         boolean isChecking = false;
+                        isNotNum = true;
 
                         do{
-                            do{
-                                System.out.print("Please input your choice: ");
-                                option2 = scan.nextInt();
+                            try{
+                                do{
+                                    do{
+                                        System.out.print("Please input your choice: ");
+                                        option2 = scan.nextInt();
 
-                                if (option2 < 1 || option2 > BankAccount.accountCount){
-                                    System.out.print("Invalid choice. ");
+                                        if (option2 < 1 || option2 > BankAccount.accountCount){
+                                            System.out.print("Invalid choice. ");
+                                        }
+                                    }
+                                    while (option2 < 1 || option2 > BankAccount.accountCount);
+
+                                    if (!(accounts[option2 - 1] instanceof CheckingAccount)){
+                                        System.out.print("Invalid choice. ");
+                                    }
+                                    else{
+                                        isChecking = true;
+                                    }
                                 }
-                            }
-                            while (option2 < 1 || option2 > BankAccount.accountCount);
+                                while(!isChecking);
 
-                            if (!(accounts[option2 - 1] instanceof CheckingAccount)){
-                                System.out.print("Invalid choice. ");
+                                // Chooses an account and runs the process check method
+                                ((CheckingAccount) accounts[option2 - 1]).processCheck();
+
+                                isNotNum = false;
                             }
-                            else{
-                                isChecking = true;
+                            catch (InputMismatchException e){
+                                System.out.println("Must enter a valid number!");
+                                scan.nextLine();
                             }
                         }
-                        while(!isChecking);
+                        while (isNotNum);
 
-                        // Chooses an account and runs the process check method
-                        ((CheckingAccount) accounts[option2 - 1]).processCheck();
                         System.out.println();
                     }
 
@@ -190,24 +245,57 @@ public class Run {
         System.out.println("1. Checking Account");
         System.out.println("2. Saving Account");
 
-        int choice;
+        int choice = 0;
         char choiceIR;
-        double deposit;
-        double interestRate;
+        double deposit = 0;
+        double interestRate = 0;
+        boolean isNotNum = true;
 
-        // Loops until correct choice is chosen
         do{
-            System.out.print("Enter your choice: ");
-            choice = scan.nextInt();
+            try{
+                // Loops until correct choice is chosen
+                do{
+                    System.out.print("Enter your choice: ");
+                    choice = scan.nextInt();
 
-            if (choice > 2 || choice < 1){
-                System.out.print("Invalid choice. ");
+                    if (choice > 2 || choice < 1){
+                        System.out.print("Invalid choice. ");
+                    }
+                }
+                while (choice > 2 || choice < 1);
+
+                isNotNum = false;
+            }
+            catch(InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine();
             }
         }
-        while (choice > 2 || choice < 1);
+        while (isNotNum);
 
-        System.out.print("Enter the starting deposit: ");
-        deposit = scan.nextDouble();
+        isNotNum = true;
+
+        do{
+            try{
+                // Enter deposit
+                do{
+                    System.out.print("Enter the starting deposit: ");
+                    deposit = scan.nextDouble();
+
+                    if (deposit < 0){
+                        System.out.println("Deposit cannot be negative!");
+                    }
+                }
+                while (deposit < 0);
+
+                isNotNum = false;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine();
+            }
+        }
+        while (isNotNum);
 
         // Loops through accounts and checks the lowest index with "null"
         for (int i = 0; i < accounts.length; i++){
@@ -219,14 +307,26 @@ public class Run {
                         break;
 
                     case 2:
-                        System.out.print("Use the default interest rate (0.3%)? Y/N: ");
 
                         scan.nextLine();
+
                         do{
-                            choiceIR = scan.nextLine().toLowerCase().charAt(0);
+                            String stringChoice;
+
+                            do{
+                                System.out.print("Use the default interest rate (0.3%)? Y/N: ");
+                                stringChoice = scan.nextLine().toLowerCase();
+
+                                if (stringChoice.isEmpty()){
+                                    System.out.println("Must enter an answer!");
+                                }
+                            }
+                            while (stringChoice.isEmpty());
+
+                            choiceIR = stringChoice.charAt(0);
 
                             if (choiceIR != 'y' && choiceIR != 'n'){
-                                System.out.print("Invalid answer, Enter again: ");
+                                System.out.println("Invalid answer!");
                             }
                         }
                         while(choiceIR != 'y' && choiceIR != 'n');
@@ -237,10 +337,31 @@ public class Run {
                                 break;
 
                             case 'n':
-                                System.out.print("Enter the interest rate (%): ");
-                                interestRate = scan.nextDouble();
+                                isNotNum = true;
+
+                                do{
+                                    try{
+                                        do{
+                                            System.out.print("Enter the interest rate (%): ");
+                                            interestRate = scan.nextDouble();
+
+                                            if (interestRate < 0){
+                                                System.out.println("Must enter a valid interest rate!");
+                                            }
+                                        }
+                                        while (interestRate < 0);
+
+                                        isNotNum = false;
+                                    }
+                                    catch (InputMismatchException e){
+                                        System.out.println("Must enter a number!");
+                                        scan.nextLine();
+                                    }
+                                }
+                                while (isNotNum);
 
                                 accounts[i] = new SavingAccount(deposit, interestRate);
+                                break;
                         }
 
                         break;

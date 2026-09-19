@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class BankAccount implements Account{
@@ -20,32 +21,66 @@ public abstract class BankAccount implements Account{
     // Deposit method
     public void deposit() {
         double amount;
+        boolean isNotNum = true;
 
-        System.out.print("Enter the amount you would like to deposit: $");
-        amount = scan.nextDouble();
+        // Loops until a number is typed in
+        do{
+            try{
+                // Loops until a valid number is typed in
+                do{
+                    System.out.print("Enter the amount you would like to deposit: $");
+                    amount = scan.nextDouble();
 
-        balance += amount;
+                    if (amount < 0){
+                        System.out.println("Must enter a valid amount!");
+                    }
+                }
+                while (amount < 0);
 
-        System.out.println("$" + amount + " has been deposited to account #" + accountNum);
+                balance += amount;
+                System.out.println("$" + amount + " has been deposited to account #" + accountNum);
+                isNotNum = false;
+            }
+
+            catch (InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine(); // Removes invalid input
+            }
+        }
+        while (isNotNum);
     }
 
     @Override
     // Withdraw Method
     public void withdraw() {
         double amount;
-        System.out.print("Enter the amount you would like to withdraw: $");
+        boolean isNotNum = true;
+
         do{
-            amount = scan.nextDouble();
+            try{
+                // Loops until valid amount is entered
+                do{
+                    System.out.print("Enter the amount you would like to withdraw: $");
+                    amount = scan.nextDouble();
 
-            if (amount > balance){
-                System.out.print("Insufficient funds! Enter again: $");
-            }
-            else {
+                    if (amount > balance){
+                        System.out.println("Insufficient funds!");
+                    }
+                    else if (amount < 0) {
+                        System.out.println("Must enter a valid amount!");
+                    }
+                }
+                while (amount > balance || amount < 0);
+
                 balance -= amount;
+                System.out.println("$" + amount + " has been withdrawn from account #" + accountNum);
+                isNotNum = false;
             }
-        }
-        while (amount > balance);
 
-        System.out.println("$" + amount + " has been withdrawn from account #" + accountNum);
+            catch (InputMismatchException e){
+                System.out.println("Must enter a number!");
+                scan.nextLine();
+            }
+        } while(isNotNum);
     }
 }
